@@ -5,6 +5,18 @@
 import redis
 import uuid
 from typing import Any, Callable, Optional, Union
+from functools import wraps
+
+def count_calls(method: Callable) -> Callable:
+    """ Decorator for Cache class methods to track call count
+    """
+    @wraps(method)
+    def wrapper(self: Any, *args, **kwargs) -> str:
+        """ Wraps called method and adds its call count redis before execution
+        """
+        self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
+    return wrapper
 
 class Cache:
     '''An object for storing data in a Redis data storage.
