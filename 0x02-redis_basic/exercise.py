@@ -10,9 +10,9 @@ class Cache:
     '''
     def  __init__(self):
         self._redis = redis.Redis()
-        self._redis.flushall()
+        self._redis.flushdb(True)
 
-    def store(self, data):
+    def store(self, data: Union[str, bytes, int, float]) ->str:
         '''Stores a value in a Redis data storage and returns the key.
         '''
         guid = str(uuid.uuid1());
